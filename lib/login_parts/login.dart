@@ -3,6 +3,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:traialtodo/login_parts/register.dart';
 
+import '../todo_list.dart';
+
 class login extends StatefulWidget {
   const login({Key? key}) : super(key: key);
 
@@ -12,6 +14,8 @@ class login extends StatefulWidget {
 
 class _loginState extends State<login> {
   bool _isObscure = true;
+  String email = '';
+  String password = '';
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +32,10 @@ class _loginState extends State<login> {
             children: <Widget>[
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-                child: TextFormField(
+                child: TextField(
+                  onChanged: (value){
+                    email = value;
+                  },
                   decoration: const InputDecoration(
                   labelText: 'Mail Address',
                   ),
@@ -36,7 +43,10 @@ class _loginState extends State<login> {
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-                child: TextFormField(
+                child: TextField(
+                  onChanged: (value){
+                    password = value;
+                  },
                   obscureText: _isObscure,
                   decoration: InputDecoration(
                   labelText: 'Password',
@@ -56,9 +66,32 @@ class _loginState extends State<login> {
                 child: Column(
                     children: [
                         ElevatedButton(
-                            onPressed: (){},
-                            child: Text('ログイン')
-                          ),
+                            child: Text('ログイン'),
+                              onPressed: () async {
+                    try {
+                      // メール/パスワードでログイン
+                      final FirebaseAuth auth = FirebaseAuth.instance;
+                      await auth.signInWithEmailAndPassword(
+                        email: email,
+                        password: password,
+                      );
+                      // ログインに成功した場合
+                      // チャット画面に遷移＋ログイン画面を破棄
+                      await Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(builder: (context) {
+                          return todoList();
+                        }),
+                      );
+                    } catch (e) {
+                      // ログインに失敗した場合
+                      setState(() {
+                        // infoText = "ログインに失敗しました：${e.toString()}";
+                        print('error');
+                      });
+                    }
+                  },
+                    
+                ),
                       
                         ElevatedButton(
                             onPressed: (){
