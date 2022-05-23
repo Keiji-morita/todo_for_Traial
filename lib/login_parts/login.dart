@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
 
-import 'login.dart';
-
-class register extends StatefulWidget {
-  const register({Key? key}) : super(key: key);
+class login extends StatefulWidget {
+  const login({Key? key}) : super(key: key);
 
   @override
-  State<register> createState() => _registerState();
+  State<login> createState() => _loginState();
 }
 
-class _registerState extends State<register> {
+class _loginState extends State<login> {
   bool _isObscure = true;
 
   @override
@@ -56,21 +54,8 @@ class _registerState extends State<register> {
                     children: [
                         ElevatedButton(
                             onPressed: (){},
-                            child: Text('新規登録')
+                            child: Text('ログイン')
                           ),
-                        ElevatedButton(
-                            onPressed: (){
-                              Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => login(),
-                              )
-                              );
-                            },
-                            child: Text('アカウントお持ちの方'),
-                              style: ElevatedButton.styleFrom(
-                            primary: Colors.red,
-                          ),
-                        ),
                       ],
                   ),
               )
