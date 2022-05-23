@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import 'login.dart';
 
@@ -11,6 +13,8 @@ class register extends StatefulWidget {
 
 class _registerState extends State<register> {
   bool _isObscure = true;
+  String email = '';
+  String password = '';
 
   @override
   Widget build(BuildContext context) {
@@ -27,15 +31,22 @@ class _registerState extends State<register> {
             children: <Widget>[
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-                child: TextFormField(
+                child: TextField(
+                  onChanged: (value){
+                    email = value;
+                  },
                   decoration: const InputDecoration(
                   labelText: 'Mail Address',
+
                   ),
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-                child: TextFormField(
+                child: TextField(
+                  onChanged: (value){
+                    password = value;
+                  },
                   obscureText: _isObscure,
                   decoration: InputDecoration(
                   labelText: 'Password',
@@ -55,7 +66,13 @@ class _registerState extends State<register> {
                 child: Column(
                     children: [
                         ElevatedButton(
-                            onPressed: (){},
+                            onPressed: (){
+                    try {
+                          Navigator.pushNamed(context, '/content');
+                        } catch (e) {
+                      print(e);
+                        }
+                            },
                             child: Text('新規登録')
                           ),
                         ElevatedButton(
