@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'login.dart';
+import 'package:traialtodo/main.dart';
 
 class register extends StatefulWidget {
   const register({Key? key}) : super(key: key);
@@ -12,6 +13,8 @@ class register extends StatefulWidget {
 }
 
 class _registerState extends State<register> {
+  final _auth = FirebaseAuth.instance;
+  
   bool _isObscure = true;
   String email = '';
   String password = '';
@@ -66,13 +69,25 @@ class _registerState extends State<register> {
                 child: Column(
                     children: [
                         ElevatedButton(
-                            onPressed: (){
-                    try {
-                          Navigator.pushNamed(context, '/content');
-                        } catch (e) {
-                      print(e);
-                        }
-                            },
+                      onPressed: ()async {
+                              try {
+                              final newUser = await _auth.createUserWithEmailAndPassword(
+                              email: email, password: password);
+                              if (newUser != null) {
+                              Navigator.pushNamed(context, '/content');
+                              }
+                          } on FirebaseAuthException catch (e) {
+                            if (e.code == 'email-already-in-use') {
+                                  print('指定したメールアドレスは登録済みです');
+                            } else if (e.code == 'invalid-email') {
+                                  print('メールアドレスのフォーマットが正しくありません');
+                            } else if (e.code == 'operation-not-allowed') {
+                                  print('指定したメールアドレス・パスワードは現在使用できません');
+                            } else if (e.code == 'weak-password') {
+                                  print('パスワードは６文字以上にしてください');
+                              }
+                            }
+                          },
                             child: Text('新規登録')
                           ),
                         ElevatedButton(

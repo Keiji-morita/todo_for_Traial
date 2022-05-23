@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "658955667527",
+    "project_id": "todo-for-trial",
+    "storage_bucket": "todo-for-trial.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:658955667527:android:2b0be9e087f09b3da70962",
+        "android_client_info": {
+          "package_name": "com.example.traialtodo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "658955667527-r07gr2b9jl761113aair19hl4s37lh24.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAi19ACi7bPa1rVaNA0HpqTukZ1TDKVGOs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "658955667527-r07gr2b9jl761113aair19hl4s37lh24.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "658955667527-f6ancdr1l74fki59l09vs2f9etcfo55d.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.traialtodo",
+                "app_store_id": "0512"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
