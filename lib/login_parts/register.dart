@@ -90,19 +90,6 @@ class _registerState extends State<register> {
                           },
                             child: Text('新規登録')
                           ),
-                        ElevatedButton(
-                            onPressed: (){
-                              Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => login(),
-                              )
-                              );
-                            },
-                            child: Text('アカウントお持ちの方'),
-                              style: ElevatedButton.styleFrom(
-                            primary: Colors.red,
-                          ),
-                        ),
                       ],
                   ),
               )

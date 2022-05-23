@@ -11,6 +11,7 @@ class _todoListState extends State<todoList> {
     return Scaffold(
       appBar: AppBar(
         title: Text('成功'),
+        automaticallyImplyLeading: false,
       ),
       body: Center(
         child: Text('新規登録成功！'),

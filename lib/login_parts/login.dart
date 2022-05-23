@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:traialtodo/login_parts/register.dart';
 
 class login extends StatefulWidget {
   const login({Key? key}) : super(key: key);
@@ -58,6 +59,20 @@ class _loginState extends State<login> {
                             onPressed: (){},
                             child: Text('ログイン')
                           ),
+                      
+                        ElevatedButton(
+                            onPressed: (){
+                              Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => register(),
+                              )
+                              );
+                            },
+                            child: Text('ユーザー登録はこちらから'),
+                              style: ElevatedButton.styleFrom(
+                            primary: Colors.red,
+                          ),
+                        ),
                       ],
                   ),
               )

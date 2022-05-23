@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:traialtodo/todo_list.dart';
+import 'login_parts/login.dart';
 import 'login_parts/register.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
@@ -18,16 +19,17 @@ class Base extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-              initialRoute: '/register',
+              // initialRoute: '/login',
       routes: {
-        '/register': (context) => const register(),
+        // '/login': (context) => const login(),
         '/content': (context) =>  todoList(),
+        '/register': (context) => register(),
       },
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.blue,
-
       ),
+      home: login(),
 
     );
   }
