@@ -19,7 +19,6 @@ class Base extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-              // initialRoute: '/login',
       routes: {
         // '/login': (context) => const login(),
         '/content': (context) =>  todoList(),
