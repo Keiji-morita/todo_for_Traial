@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:traialtodo/todo_list.dart';
 
-
 class EditDialog extends StatefulWidget {
-  static Future<Todos?> show(BuildContext context) {
+  static Future<Todo?> show(BuildContext context) {
     return showDialog(
       context: context,
       builder: (context) => EditDialog(),
@@ -34,9 +33,8 @@ class _EditDialogState extends State<EditDialog> {
           onPressed: () {
             Navigator.pop(
               context,
-              Todos(task: "テスト"),
+              Todo(title: _textEditingController.text),
             );
-            
           },
           child: Text("保存"),
         ),

@@ -8,65 +8,64 @@ class todoList extends StatefulWidget {
   _todoListState createState() => _todoListState();
 }
 
-class Todos {
-  final String task;
-  final bool isdone;
+class Todo {
+    String title;
+    bool done;
 
-  Todos({required this.task, this.isdone = false});
+  Todo({required this.title, this.done = false});
 }
 
 class _todoListState extends State<todoList> {
+  List<Todo> _todos = [
+    Todo(title: "牛乳"),
+    Todo(title: "じゃがいも"),
+    Todo(title: "にんじん"),
+  ];
+
   @override
   Widget build(BuildContext context) {
-    // String todo = '';
-    final TextEditingController todoController = TextEditingController();
-    final List<Todos> _todo = [
-      Todos(task: "牛乳"),
-      Todos(task: "パンケーキ"),
-    ];
-
-  return Scaffold(
-      appBar: AppBar(
-        title: Text('成功'),
-        automaticallyImplyLeading: false,
-      ),
+    return Scaffold(
       body: ListView.builder(
-                    itemCount: _todo.length, 
-                    itemBuilder: (context,index) { 
-                    final  todo = _todo[index];
-                  
-                    return ListTile(
-                      title: Text(todo.task),
-                      trailing: Checkbox(
-                        value: todo.isdone,
-                    onChanged: (checked) {
-                      setState(() {
-                        _todo[index] = Todos(task: todo.task, isdone: checked ?? true);
-                            });
-                          }
-                      ),
-                    );
-                  }
-              ),
-          
-          floatingActionButton: FloatingActionButton(
-            child: Icon(Icons.add),
-            onPressed: () async{
-              final addedtodo = await EditDialog.show(context);
-              if (addedtodo != null) {
-                setState(() {
-                  _todo.add(addedtodo);
-                });
-              }
+        itemCount: _todos.length,
+        itemBuilder: (context, index) {
+          final todo = _todos[index];
 
-              print(_todo);
-            },
-
+          return new Card(
             
-          ),
-        );
-      
-    
+          child: ListTile(
+                title: Text(todo.title),
+                trailing: Checkbox(
+                  value: todo.done,
+                  onChanged: (checked) {
+                    setState(() {
+                      _todos[index] = Todo(title: todo.title, done: checked ?? false);
+                    });
+                  },
+                ),
+                onLongPress: () async {
+                  final result = await EditDialog.show(context, );
+                  if (result != null) {
+                    setState(() {
+                      _todos[index] = result;
+                    });
+                  }
+                },
+              ),
+            
+          );
+        },
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+        onPressed: () async {
+          final result = await EditDialog.show(context);
+          if (result != null) {
+            setState(() {
+              _todos.add(result);
+            });
+          }
+        },
+      ),
+    );
   }
 }
-
