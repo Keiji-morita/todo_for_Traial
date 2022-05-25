@@ -21,7 +21,7 @@ class _loginState extends State<login> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('アカウント作成'),
+        title: Text('ログイン'),
         backgroundColor: Colors.blue,
       ),
       body: Center(

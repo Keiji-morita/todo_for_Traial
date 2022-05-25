@@ -1,14 +1,18 @@
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+
+import 'addingDialog.dart';
 
 class todoList extends StatefulWidget {
   @override
   _todoListState createState() => _todoListState();
 }
 
-class Todo {
-  Todo({required this.name, required this.checked});
-  final String name;
-  bool checked;
+class Todos {
+  final String task;
+  final bool isdone;
+
+  Todos({required this.task, this.isdone = false});
 }
 
 class _todoListState extends State<todoList> {
@@ -16,42 +20,53 @@ class _todoListState extends State<todoList> {
   Widget build(BuildContext context) {
     // String todo = '';
     final TextEditingController todoController = TextEditingController();
-    final List<Todo> _todo = <Todo>[];
+    final List<Todos> _todo = [
+      Todos(task: "牛乳"),
+      Todos(task: "パンケーキ"),
+    ];
 
-    
-
-    return Scaffold(
+  return Scaffold(
       appBar: AppBar(
         title: Text('成功'),
         automaticallyImplyLeading: false,
       ),
-      body: Center(
-        child: Column(
-          children: <Widget> [
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-                child: TextField(
-                  controller: todoController,
-                  decoration: const InputDecoration(
-                  labelText: 'What is todo ?',
-                  ),
-                ),
+      body: ListView.builder(
+                    itemCount: _todo.length, 
+                    itemBuilder: (context,index) { 
+                    final  todo = _todo[index];
+                  
+                    return ListTile(
+                      title: Text(todo.task),
+                      trailing: Checkbox(
+                        value: todo.isdone,
+                    onChanged: (checked) {
+                      setState(() {
+                        _todo[index] = Todos(task: todo.task, isdone: checked ?? true);
+                            });
+                          }
+                      ),
+                    );
+                  }
               ),
+          
+          floatingActionButton: FloatingActionButton(
+            child: Icon(Icons.add),
+            onPressed: () async{
+              final addedtodo = await EditDialog.show(context);
+              if (addedtodo != null) {
+                setState(() {
+                  _todo.add(addedtodo);
+                });
+              }
 
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-              primary: Colors.red,
-            ),
-              onPressed: (){
+              print(_todo.task);
+            },
 
-              },
-              
-              child: Text("submit")
-              
-              ),
-          ],
-        )
-      ),
-    );
+            
+          ),
+        );
+      
+    
   }
 }
+
