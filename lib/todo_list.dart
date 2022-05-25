@@ -30,28 +30,35 @@ class _todoListState extends State<todoList> {
         itemBuilder: (context, index) {
           final todo = _todos[index];
 
-          return new Card(
+          return new Dismissible(
             
-          child: ListTile(
-                title: Text(todo.title),
-                trailing: Checkbox(
-                  value: todo.done,
-                  onChanged: (checked) {
-                    setState(() {
-                      _todos[index] = Todo(title: todo.title, done: checked ?? false);
-                    });
-                  },
-                ),
-                onLongPress: () async {
-                  final result = await EditDialog.show(context, );
-                  if (result != null) {
-                    setState(() {
-                      _todos[index] = result;
-                    });
-                  }
-                },
+            child: new Card(
+                  child: ListTile(
+                    title: Text(todo.title),
+                    trailing: Checkbox(
+                      value: todo.done,
+                      onChanged: (checked) {
+                        setState(() {
+                          _todos[index] = Todo(title: todo.title, done: checked ?? false);
+                        });
+                      },
+                    ),
+                    onLongPress: () async {
+                      final result = await EditDialog.show(context, );
+                      if (result != null) {
+                        setState(() {
+                          _todos[index] = result;
+                        });
+                      }
+                    },
+                  ),
+                
               ),
-            
+                            onDismissed: (DismissDirection direction) {
+                setState(() {
+                  _todos.removeAt(index);
+                });
+              }, key: ValueKey<int>(_todos.length),
           );
         },
       ),
