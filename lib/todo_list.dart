@@ -59,7 +59,7 @@ class _todoListState extends State<todoList> {
                 });
               }
 
-              print(_todo.task);
+              print(_todo);
             },
 
             
