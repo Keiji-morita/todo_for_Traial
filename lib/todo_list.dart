@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 
@@ -10,57 +11,59 @@ class todoList extends StatefulWidget {
 
 class Todo {
     String title;
-    bool done;
+    bool isdone;
 
-  Todo({required this.title, this.done = false});
+  Todo({required this.title, this.isdone = false});
 }
 
 class _todoListState extends State<todoList> {
-  List<Todo> _todos = [
-    Todo(title: "牛乳"),
-    Todo(title: "じゃがいも"),
-    Todo(title: "にんじん"),
-  ];
+  List<Todo> _todos = [];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ListView.builder(
-        itemCount: _todos.length,
-        itemBuilder: (context, index) {
-          final todo = _todos[index];
+      body: Column(
+        children:  [
+          Expanded(
+            child: StreamBuilder<QuerySnapshot>(
+                stream: FirebaseFirestore.instance
+                .collection('todos')
+                .snapshots(),
+              builder: (context, snapshot) {
+                if (snapshot.hasData){
+                  final List<DocumentSnapshot> documents = snapshot.data!.docs;
+                  return ListView(
+                    
+                    children : documents.map((documents){
+                      return Dismissible(
+                        key: Key(documents.id),
+                      child: Card(
+                          child: ListTile(
+                            title: Text(documents['task'])
+                          )
+                      ),
+                      onDismissed: (DismissDirection direction){
+                          setState(() async {
+                        await FirebaseFirestore.instance
+                        .collection('todos')
+                        .doc(documents.id)
+                        .delete();
+                          });
+                      }, 
+                    );
 
-          return new Dismissible(
-            
-            child: new Card(
-                  child: ListTile(
-                    title: Text(todo.title),
-                    trailing: Checkbox(
-                      value: todo.done,
-                      onChanged: (checked) {
-                        setState(() {
-                          _todos[index] = Todo(title: todo.title, done: checked ?? false);
-                        });
-                      },
-                    ),
-                    onLongPress: () async {
-                      final result = await EditDialog.show(context, );
-                      if (result != null) {
-                        setState(() {
-                          _todos[index] = result;
-                        });
-                      }
-                    },
-                  ),
-                
-              ),
-                            onDismissed: (DismissDirection direction) {
-                setState(() {
-                  _todos.removeAt(index);
-                });
-              }, key: ValueKey<int>(_todos.length),
-          );
-        },
+                  }).toList()
+                );
+              } 
+              //エラーハンドリング
+              return Center(
+                child: Text("読み込み中")
+              );
+            }
+          )
+        ),
+      ]
+        
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
@@ -74,5 +77,8 @@ class _todoListState extends State<todoList> {
         },
       ),
     );
+
   }
 }
+
+
