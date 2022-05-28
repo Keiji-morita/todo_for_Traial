@@ -17,11 +17,7 @@ class Todo {
 }
 
 class _todoListState extends State<todoList> {
-  List<Todo> _todos = [
-    Todo(title: "牛乳"),
-    Todo(title: "じゃがいも"),
-    Todo(title: "にんじん"),
-  ];
+  List<Todo> _todos = [];
 
   @override
   Widget build(BuildContext context) {
@@ -37,12 +33,25 @@ class _todoListState extends State<todoList> {
                 if (snapshot.hasData){
                   final List<DocumentSnapshot> documents = snapshot.data!.docs;
                   return ListView(
+                    
                     children : documents.map((documents){
-                      return Card(
+                      return Dismissible(
+                        key: Key(documents.id),
+                      child: Card(
                           child: ListTile(
                             title: Text(documents['task'])
                           )
-                      );
+                      ),
+                      onDismissed: (DismissDirection direction){
+                          setState(() async {
+                        await FirebaseFirestore.instance
+                        .collection('todos')
+                        .doc(documents.id)
+                        .delete();
+                          });
+                      }, 
+                    );
+
                   }).toList()
                 );
               } 
@@ -50,9 +59,7 @@ class _todoListState extends State<todoList> {
               return Center(
                 child: Text("読み込み中")
               );
-
-            
-          }
+            }
           )
         ),
       ]

@@ -32,11 +32,6 @@ class _EditDialogState extends State<EditDialog> {
       actions: [
         ElevatedButton(
           onPressed: () async {
-            Navigator.pop(
-              context,
-              Todo(title: _textEditingController.text),
-            );
-
             await FirebaseFirestore.instance
             .collection('todos')
             .doc()
