@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 
@@ -10,9 +11,9 @@ class todoList extends StatefulWidget {
 
 class Todo {
     String title;
-    bool done;
+    bool isdone;
 
-  Todo({required this.title, this.done = false});
+  Todo({required this.title, this.isdone = false});
 }
 
 class _todoListState extends State<todoList> {
@@ -33,13 +34,14 @@ class _todoListState extends State<todoList> {
           return new Dismissible(
             
             child: new Card(
+
                   child: ListTile(
                     title: Text(todo.title),
                     trailing: Checkbox(
-                      value: todo.done,
+                      value: todo.isdone,
                       onChanged: (checked) {
                         setState(() {
-                          _todos[index] = Todo(title: todo.title, done: checked ?? false);
+                          _todos[index] = Todo(title: todo.title, isdone: checked ?? false);
                         });
                       },
                     ),
@@ -74,5 +76,7 @@ class _todoListState extends State<todoList> {
         },
       ),
     );
+
   }
 }
+
