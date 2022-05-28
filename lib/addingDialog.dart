@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:traialtodo/todo_list.dart';
 
@@ -30,16 +31,24 @@ class _EditDialogState extends State<EditDialog> {
       ),
       actions: [
         ElevatedButton(
-          onPressed: () {
+          onPressed: () async {
             Navigator.pop(
               context,
               Todo(title: _textEditingController.text),
             );
+
+            await FirebaseFirestore.instance
+            .collection('todos')
+            .doc()
+            .set({
+              'task':  _textEditingController.text
+            });
           },
           child: Text("保存"),
         ),
       ],
     );
+
   }
 
   @override
