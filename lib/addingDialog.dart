@@ -38,6 +38,7 @@ class _EditDialogState extends State<EditDialog> {
             .set({
               'task':  _textEditingController.text
             });
+            Navigator.pop(context);
           },
           child: Text("保存"),
         ),

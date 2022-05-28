@@ -25,10 +25,10 @@ class _todoListState extends State<todoList> {
       body: Column(
         children:  [
           Expanded(
-            child: FutureBuilder<QuerySnapshot>(
-                future: FirebaseFirestore.instance
+            child: StreamBuilder<QuerySnapshot>(
+                stream: FirebaseFirestore.instance
                 .collection('todos')
-                .get(),
+                .snapshots(),
               builder: (context, snapshot) {
                 if (snapshot.hasData){
                   final List<DocumentSnapshot> documents = snapshot.data!.docs;
