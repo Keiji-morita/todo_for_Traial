@@ -26,43 +26,37 @@ class _todoListState extends State<todoList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ListView.builder(
-        itemCount: _todos.length,
-        itemBuilder: (context, index) {
-          final todo = _todos[index];
+      body: Column(
+        children:  [
+          Expanded(
+            child: FutureBuilder<QuerySnapshot>(
+                future: FirebaseFirestore.instance
+                .collection('todos')
+                .get(),
+              builder: (context, snapshot) {
+                if (snapshot.hasData){
+                  final List<DocumentSnapshot> documents = snapshot.data!.docs;
+                  return ListView(
+                    children : documents.map((documents){
+                      return Card(
+                          child: ListTile(
+                            title: Text(documents['task'])
+                          )
+                      );
+                  }).toList()
+                );
+              } 
+              //エラーハンドリング
+              return Center(
+                child: Text("読み込み中")
+              );
 
-          return new Dismissible(
             
-            child: new Card(
-
-                  child: ListTile(
-                    title: Text(todo.title),
-                    trailing: Checkbox(
-                      value: todo.isdone,
-                      onChanged: (checked) {
-                        setState(() {
-                          _todos[index] = Todo(title: todo.title, isdone: checked ?? false);
-                        });
-                      },
-                    ),
-                    onLongPress: () async {
-                      final result = await EditDialog.show(context, );
-                      if (result != null) {
-                        setState(() {
-                          _todos[index] = result;
-                        });
-                      }
-                    },
-                  ),
-                
-              ),
-                            onDismissed: (DismissDirection direction) {
-                setState(() {
-                  _todos.removeAt(index);
-                });
-              }, key: ValueKey<int>(_todos.length),
-          );
-        },
+          }
+          )
+        ),
+      ]
+        
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
@@ -79,4 +73,5 @@ class _todoListState extends State<todoList> {
 
   }
 }
+
 
